@@ -1,0 +1,198 @@
+{
+  "common": {
+    "close": "Close",
+    "loading": "Loading..."
+  },
+  "home": {
+    "map": "Map",
+    "infinity": "Infinity",
+    "infinityLocked": "Complete Map 1 Level 5 to unlock Infinity Mode",
+    "shop": "Shop",
+    "settings": "Settings",
+    "dailyReward": "Daily Reward",
+    "missions": "Missions"
+  },
+  "howToPlay": {
+    "title": "How to Play",
+    "prev": "Back",
+    "next": "Next",
+    "done": "Got it",
+    "step1Title": "Flip two cards",
+    "step1Body": "Tap a card to flip it, then tap a second card. Find the matching pair.",
+    "step2Title": "Match the pair",
+    "step2Body": "Same pictures disappear. Different pictures flip back — then try again.",
+    "step3Title": "Beat the clock",
+    "step3Body": "Clear every pair before time runs out. Faster clears earn more stars.",
+    "step4Title": "Use boosts",
+    "step4Body": "Buy Reveal, Extra Time, and Lucky Clover in the Shop to help on tough levels."
+  },
+  "map": {
+    "selectTitle": "Maps",
+    "stars": "{{earned}}/{{max}}",
+    "previous": "PREV",
+    "next": "NEXT",
+    "levelLocked": "Clear the previous level first",
+    "mapLocked": "Clear the previous map to play these levels"
+  },
+  "game": {
+    "scoreLabel": "SCORE",
+    "levelLabel": "LEVEL {{level}}",
+    "levelShort": "LEVEL",
+    "yourScore": "YOUR SCORE",
+    "yourStars": "STARS",
+    "rank": "Rank: #{{rank}}",
+    "coinsEarned": "COINS EARNED",
+    "gameOver": "GAME OVER",
+    "retry": "PLAY AGAIN",
+    "nextLevel": "NEXT LEVEL",
+    "home": "HOME",
+    "map": "MAP",
+    "doubleReward": "X2 REWARD",
+    "shareScore": "SHARE",
+    "shareScoreTitle": "My score in {{gameName}}",
+    "shareScoreText": "I scored {{score}} in {{gameName}}! Can you beat me?",
+    "shareStarsText": "I earned {{stars}} stars on Map {{map}} Level {{level}} in {{gameName}}!",
+    "shareDialogTitle": "Share your score",
+    "shareUnavailable": "Sharing is not available",
+    "skillHintReveal": "Tap a card — this turn you flip 3",
+    "skillHintClover": "Lucky Clover ready — match a pair!",
+    "combo": "COMBO x{{combo}}"
+  },
+  "shop": {
+    "title": "Shop",
+    "buy": "Buy",
+    "purchaseSuccess": "Purchased {{name}}!",
+    "purchaseFailed": "Purchase failed",
+    "iapUnavailable": "Purchases are unavailable right now",
+    "notEnoughCoins": "Not enough coins!",
+    "ownedQuantity": "Owned: {{quantity}}",
+    "getCoins": {
+      "missions": "Missions",
+      "dailyReward": "Daily Reward",
+      "or": "or",
+      "coinPackAmount": "{{coins}}",
+      "coinPackLabel": "Coins",
+      "buyPrice": "{{price}}",
+      "purchasing": "Processing purchase…",
+      "purchaseSuccess": "Got {{coins}} coins!"
+    },
+    "items": {
+      "boost_reveal": {
+        "name": "Reveal One",
+        "description": "Flip 3 cards this turn."
+      },
+      "boost_extra_time": {
+        "name": "Extra Time",
+        "description": "Add 30 seconds to the timer!"
+      },
+      "boost_lucky_clover": {
+        "name": "Lucky Clover",
+        "description": "Next correct match clears an extra pair."
+      },
+      "remove_ads": {
+        "name": "Remove Ads",
+        "description": "Remove all ads permanently"
+      },
+      "coins_10000": {
+        "name": "10000 Coins",
+        "description": "Get 10000 coins"
+      }
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "profile": "Profile",
+    "language": "Language",
+    "sound": "Sound",
+    "music": "Music",
+    "soundEffects": "Effects",
+    "terms": "Terms",
+    "privacy": "Privacy",
+    "termsPrivacy": "Terms & Privacy",
+    "playerName": "Player name",
+    "playerNamePlaceholder": "Enter your name",
+    "playerNameSave": "Save",
+    "playerNameRequired": "Please enter a name",
+    "playerNameUpdated": "Name updated",
+    "playerNameSavedLocally": "Name saved — will sync when online",
+    "playerNameFailed": "Could not update name",
+    "playerNameOffline": "Create a guest profile when online first",
+    "ads": "Ads",
+    "hideAds": "Hide ads",
+    "removeAdsPrice": "{{price}}",
+    "purchasingAds": "Processing purchase…",
+    "restorePurchasesHint": "Already purchased? Restore",
+    "restoringPurchases": "Restoring purchases…",
+    "restorePurchasesSuccess": "Purchases restored",
+    "restorePurchasesEmpty": "No purchases to restore",
+    "restorePurchasesFailed": "Could not restore purchases",
+    "version": "Version {{version}}"
+  },
+  "missions": {
+    "title": "Missions",
+    "claim": "CLAIM",
+    "go": "GO",
+    "claimed": "Claimed",
+    "progress": "{{current}}/{{target}}",
+    "claimFailed": "Cannot claim yet",
+    "get3Stars": "Get 3 stars in a game",
+    "matchPairs15": "Match 15 pairs of cards",
+    "watchAd": "Watch an ad video",
+    "playGames3": "Play 3 matches",
+    "dailyLogin": "Log in every day",
+    "updatePlayerName": "Update your player name"
+  },
+  "dailyReward": {
+    "title": "Daily Reward",
+    "claim": "Claim",
+    "day": "Day {{day}}",
+    "comeBack": "Come back tomorrow!"
+  },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "top100": "Top 100",
+    "yourRank": "Your Rank",
+    "retry": "Retry",
+    "rank": "Your Rank: #{{rank}}",
+    "empty": "No scores yet. Play a game to get on the board!",
+    "anonymous": "Player",
+    "rankUnavailable": "Your rank is not available yet",
+    "error": "Couldn't load the leaderboard. Check your connection and try again.",
+    "offlineLocalBest": "You're offline — play scores are saved locally.",
+    "localBest": "Your best: {{score}}"
+  },
+  "legal": {
+    "title": "Terms & Privacy",
+    "tabTerms": "Terms",
+    "tabPrivacy": "Privacy",
+    "termsContent": "Last updated: August 2026\n\nThese Terms of Service apply to Memora (\"the game\"), published by Vraxion.\n\n1. Acceptance\nBy downloading, installing, or using Memora, you agree to these Terms. If you do not agree, please do not use the game.\n\n2. License\nWe grant you a limited, non-exclusive, non-transferable license to use the game for personal, non-commercial entertainment on your own devices.\n\n3. Guest account\nMemora uses a guest profile created on your device. You may set a display name for leaderboards. There is no email or social login. Uninstalling the app or clearing app data may permanently remove your guest profile and local progress.\n\n4. Virtual items & purchases\nCoins, coin packs, boosts (such as Reveal One, Extra Time, and Lucky Clover), and Remove Ads are virtual items or entitlements with no real-world cash value and cannot be redeemed for money. In-app purchases are processed by Apple App Store or Google Play (and related billing partners such as RevenueCat). Purchases are generally final subject to the store's refund rules. We may change, balance, or remove virtual items at any time.\n\n5. Ads\nThe game may show advertisements unless you purchase Remove Ads. Ad networks may collect device and advertising identifiers according to their own policies and applicable consent screens.\n\n6. Fair play\nYou agree not to cheat, exploit bugs, manipulate scores or leaderboards, harass others, or use the game in any way that violates applicable laws.\n\n7. Leaderboards & sharing\nMemora is a single-player game. Scores you submit may appear on public leaderboards with your display name. You may share your score through your device's share sheet; that share is not uploaded by us beyond what the OS share action requires.\n\n8. Changes\nWe may update these terms from time to time. Continued use of the game after changes constitutes acceptance of the updated terms.\n\n9. Contact\nQuestions about these terms: support@vraxion.com",
+    "privacyContent": "Last updated: August 2026\n\nThis Privacy Policy describes how Memora (\"the game\"), published by Vraxion, handles information.\n\n1. Information we collect\n• Guest profile: a guest ID and secure token created for your install, plus an optional display name.\n• Gameplay on our servers: scores and related play metadata (such as session duration and merge counts) submitted for leaderboards.\n• Device & notifications (when enabled): platform (iOS/Android), language/locale, and push notification token.\n• On your device only: coins, boost inventory, missions, daily rewards, in-progress game saves, settings (sound, music, language), and local high score.\n• Analytics events (when enabled): session and gameplay events such as game start/over, purchases, ad rewards, daily claims, and mission completion. We may associate analytics with your guest ID.\n• Advertising & consent (when ads are shown): advertising identifiers and consent status via platforms such as Google AdMob, including ATT on iOS and applicable consent prompts.\n\nWe do not require your email address or social account to play.\n\n2. How we use information\nWe use this information to run the game, maintain your guest session, show leaderboards, deliver push or local reminders (for example daily rewards or rank updates), process in-app purchases, show or suppress ads, improve the product, and respond to support requests.\n\n3. Where data is stored\nCoins, boosts, missions, daily rewards, in-progress game saves, and most settings stay on your device. Guest credentials, display name, scores (with related play metadata), and device push tokens may be stored on our servers so leaderboards and notifications work across sessions. Clearing app data or uninstalling may delete local data and your guest link on that device.\n\n4. Third-party services\nDepending on build and settings, the game may use:\n• Google AdMob (ads and privacy/consent tooling)\n• Firebase Analytics\n• Firebase Cloud Messaging (push notifications)\n• RevenueCat and Apple / Google in-app billing (purchases)\n• Device share and in-app review features provided by the OS\n\nEach provider processes data under its own privacy policy.\n\n5. Children's privacy\nThe game is not directed at children under 13. We do not knowingly collect personal information from children under 13. If you believe a child has provided such information, contact us and we will take appropriate steps.\n\n6. Your rights\nDepending on your region, you may request access to, correction of, or deletion of personal data associated with your guest profile by contacting support@vraxion.com. Store purchases and refunds are handled through Apple or Google.\n\n7. Changes\nWe may update this privacy policy from time to time. Significant changes will be communicated through the app or our website (for example memora.vraxion.com).\n\n8. Contact\nPrivacy questions: support@vraxion.com"
+  },
+  "ads": {
+    "rewardOffline": "Connect to the internet to claim your reward",
+    "rewardUnavailable": "Reward unavailable",
+    "rewardNotConfigured": "No reward configured for placement {{placement}}",
+    "rewardIncomplete": "Ad was not completed",
+    "useRequestReward": "Use requestReward for rewarded placements"
+  },
+  "rateApp": {
+    "title": "RATE THE GAME",
+    "message": "Please rate us to help improve the game!",
+    "rateNow": "RATE NOW",
+    "later": "LATER",
+    "thanks": "Thanks for your rating!"
+  },
+  "notifications": {
+    "dailyReward": {
+      "title": "Daily Reward Ready",
+      "body": "Your daily reward is waiting. Come back and claim it!"
+    },
+    "top100Exited": {
+      "body": "You left Top 100. Come back to improve your rank."
+    },
+    "rankPush": {
+      "body": "You are currently ranked #{{rank}}.",
+      "bodyFallback": "Tap to view your current leaderboard rank."
+    }
+  }
+}

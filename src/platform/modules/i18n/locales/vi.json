@@ -1,0 +1,198 @@
+{
+  "common": {
+    "close": "Đóng",
+    "loading": "Đang tải..."
+  },
+  "home": {
+    "map": "Bản đồ",
+    "infinity": "Vô hạn",
+    "infinityLocked": "Hoàn thành Map 1 Level 5 để mở Infinity Mode",
+    "shop": "Cửa hàng",
+    "settings": "Cài đặt",
+    "dailyReward": "Quà hàng ngày",
+    "missions": "Nhiệm vụ"
+  },
+  "howToPlay": {
+    "title": "Hướng dẫn chơi",
+    "prev": "Trước",
+    "next": "Tiếp",
+    "done": "Đã hiểu",
+    "step1Title": "Lật hai thẻ",
+    "step1Body": "Chạm một thẻ để lật, rồi chọn thẻ thứ hai. Hãy tìm cặp giống nhau.",
+    "step2Title": "Ghép cặp",
+    "step2Body": "Hai thẻ giống nhau sẽ biến mất. Khác nhau thì úp lại — rồi thử lượt tiếp.",
+    "step3Title": "Đua với thời gian",
+    "step3Body": "Tìm hết các cặp trước khi hết giờ. Còn nhiều thời gian thì được nhiều sao hơn.",
+    "step4Title": "Dùng vật phẩm",
+    "step4Body": "Mua Reveal, Extra Time và Lucky Clover ở Cửa hàng để hỗ trợ màn khó."
+  },
+  "map": {
+    "selectTitle": "Bản đồ",
+    "stars": "{{earned}}/{{max}}",
+    "previous": "TRƯỚC",
+    "next": "SAU",
+    "levelLocked": "Hãy vượt qua level trước đã",
+    "mapLocked": "Hoàn thành map trước để chơi các level này"
+  },
+  "game": {
+    "scoreLabel": "ĐIỂM",
+    "levelLabel": "LEVEL {{level}}",
+    "levelShort": "LEVEL",
+    "yourScore": "ĐIỂM CỦA BẠN",
+    "yourStars": "SAO",
+    "rank": "Hạng: #{{rank}}",
+    "coinsEarned": "XU NHẬN ĐƯỢC",
+    "gameOver": "KẾT THÚC",
+    "retry": "CHƠI LẠI",
+    "nextLevel": "MÀN TIẾP",
+    "home": "TRANG CHỦ",
+    "map": "MAP",
+    "doubleReward": "X2 THƯỞNG",
+    "shareScore": "CHIA SẺ",
+    "shareScoreTitle": "Điểm của tôi trong {{gameName}}",
+    "shareScoreText": "Tôi đạt {{score}} điểm trong {{gameName}}! Bạn có vượt qua được không?",
+    "shareStarsText": "Tôi đạt {{stars}} sao ở Map {{map}} Level {{level}} trong {{gameName}}!",
+    "shareDialogTitle": "Chia sẻ điểm số",
+    "shareUnavailable": "Không thể chia sẻ trên thiết bị này",
+    "skillHintReveal": "Chạm một thẻ — lượt này lật 3 lá",
+    "skillHintClover": "Lucky Clover sẵn sàng — hãy match một cặp!",
+    "combo": "COMBO x{{combo}}"
+  },
+  "shop": {
+    "title": "Cửa hàng",
+    "buy": "Mua",
+    "purchaseSuccess": "Đã mua {{name}}!",
+    "purchaseFailed": "Mua thất bại",
+    "iapUnavailable": "Hiện không thể mua hàng",
+    "notEnoughCoins": "Không đủ xu!",
+    "ownedQuantity": "Đang có: {{quantity}}",
+    "getCoins": {
+      "missions": "Nhiệm vụ",
+      "dailyReward": "Quà hàng ngày",
+      "or": "hoặc",
+      "coinPackAmount": "{{coins}}",
+      "coinPackLabel": "xu",
+      "buyPrice": "{{price}}",
+      "purchasing": "Đang xử lý mua hàng…",
+      "purchaseSuccess": "Nhận {{coins}} xu!"
+    },
+    "items": {
+      "boost_reveal": {
+        "name": "Reveal One",
+        "description": "Lượt này được lật 3 thẻ."
+      },
+      "boost_extra_time": {
+        "name": "Extra Time",
+        "description": "Thêm 30 giây vào đồng hồ!"
+      },
+      "boost_lucky_clover": {
+        "name": "Lucky Clover",
+        "description": "Match đúng sẽ xoá thêm một cặp."
+      },
+      "remove_ads": {
+        "name": "Gỡ Quảng Cáo",
+        "description": "Gỡ toàn bộ quảng cáo vĩnh viễn"
+      },
+      "coins_10000": {
+        "name": "10000 xu",
+        "description": "Nhận 10000 xu"
+      }
+    }
+  },
+  "settings": {
+    "title": "Cài đặt",
+    "profile": "Hồ sơ",
+    "language": "Ngôn ngữ",
+    "sound": "Âm thanh",
+    "music": "Nhạc nền",
+    "soundEffects": "Hiệu ứng",
+    "terms": "Điều khoản",
+    "privacy": "Quyền riêng tư",
+    "termsPrivacy": "Điều khoản & Quyền riêng tư",
+    "playerName": "Tên người chơi",
+    "playerNamePlaceholder": "Nhập tên của bạn",
+    "playerNameSave": "Lưu",
+    "playerNameRequired": "Vui lòng nhập tên",
+    "playerNameUpdated": "Đã cập nhật tên",
+    "playerNameSavedLocally": "Đã lưu tên — sẽ đồng bộ khi có mạng",
+    "playerNameFailed": "Không thể cập nhật tên",
+    "playerNameOffline": "Hãy tạo hồ sơ guest khi có mạng trước",
+    "ads": "Quảng cáo",
+    "hideAds": "Ẩn quảng cáo",
+    "removeAdsPrice": "{{price}}",
+    "purchasingAds": "Đang xử lý mua hàng…",
+    "restorePurchasesHint": "Đã mua rồi? Khôi phục",
+    "restoringPurchases": "Đang khôi phục…",
+    "restorePurchasesSuccess": "Đã khôi phục giao dịch",
+    "restorePurchasesEmpty": "Không có giao dịch để khôi phục",
+    "restorePurchasesFailed": "Không thể khôi phục giao dịch",
+    "version": "Phiên bản {{version}}"
+  },
+  "missions": {
+    "title": "Nhiệm vụ",
+    "claim": "NHẬN",
+    "go": "ĐI",
+    "claimed": "Đã nhận",
+    "progress": "{{current}}/{{target}}",
+    "claimFailed": "Chưa thể nhận thưởng",
+    "get3Stars": "Đạt 3 sao trong một ván",
+    "matchPairs15": "Ghép 15 cặp thẻ",
+    "watchAd": "Xem video quảng cáo",
+    "playGames3": "Chơi 3 ván bất kỳ",
+    "dailyLogin": "Đăng nhập mỗi ngày",
+    "updatePlayerName": "Cập nhật tên người chơi"
+  },
+  "dailyReward": {
+    "title": "Quà hàng ngày",
+    "claim": "Nhận",
+    "day": "Ngày {{day}}",
+    "comeBack": "Quay lại vào ngày mai!"
+  },
+  "leaderboard": {
+    "title": "Xếp hạng",
+    "top100": "Top 100",
+    "yourRank": "Hạng của bạn",
+    "retry": "Thử lại",
+    "rank": "Hạng của bạn: #{{rank}}",
+    "empty": "Chưa có điểm nào. Chơi một ván để lên bảng!",
+    "anonymous": "Người chơi",
+    "rankUnavailable": "Chưa có hạng của bạn",
+    "error": "Không tải được bảng xếp hạng. Kiểm tra kết nối và thử lại.",
+    "offlineLocalBest": "Bạn đang ngoại tuyến — điểm chơi được lưu trên máy.",
+    "localBest": "Điểm cao nhất: {{score}}"
+  },
+  "legal": {
+    "title": "Điều khoản & Quyền riêng tư",
+    "tabTerms": "Điều khoản",
+    "tabPrivacy": "Quyền riêng tư",
+    "termsContent": "Cập nhật lần cuối: Tháng 8/2026\n\nCác Điều khoản Dịch vụ này áp dụng cho Memora (\"trò chơi\"), do Vraxion phát hành.\n\n1. Chấp nhận điều khoản\nBằng việc tải, cài đặt hoặc sử dụng Memora, bạn đồng ý với các Điều khoản này. Nếu không đồng ý, vui lòng không sử dụng trò chơi.\n\n2. Giấy phép\nChúng tôi cấp cho bạn giấy phép hạn chế, không độc quyền, không thể chuyển nhượng để sử dụng trò chơi cho mục đích giải trí cá nhân, phi thương mại trên thiết bị của bạn.\n\n3. Tài khoản khách (guest)\nMemora dùng hồ sơ khách tạo trên thiết bị. Bạn có thể đặt tên hiển thị cho bảng xếp hạng. Không có đăng nhập email hay mạng xã hội. Gỡ cài đặt hoặc xóa dữ liệu ứng dụng có thể làm mất vĩnh viễn hồ sơ khách và tiến độ lưu trên máy.\n\n4. Vật phẩm ảo & mua hàng\nXu, gói xu, vật phẩm hỗ trợ (như Lật một thẻ, Thêm thời gian, Cỏ bốn lá) và Gỡ Quảng Cáo là vật phẩm/quyền ảo, không có giá trị tiền mặt và không đổi được thành tiền thật. Giao dịch trong ứng dụng được xử lý qua Apple App Store hoặc Google Play (và đối tác thanh toán liên quan như RevenueCat). Mua hàng thường là cuối cùng, trừ khi cửa hàng cho hoàn tiền theo chính sách của họ. Chúng tôi có thể thay đổi, cân bằng hoặc gỡ vật phẩm ảo bất cứ lúc nào.\n\n5. Quảng cáo\nTrò chơi có thể hiển thị quảng cáo trừ khi bạn mua Gỡ Quảng Cáo. Mạng quảng cáo có thể thu thập mã định danh thiết bị/quảng cáo theo chính sách riêng và các màn hình đồng ý áp dụng.\n\n6. Chơi công bằng\nBạn cam kết không gian lận, khai thác lỗi, thao túng điểm số hoặc bảng xếp hạng, quấy rối người khác, hoặc sử dụng trò chơi trái pháp luật.\n\n7. Bảng xếp hạng & chia sẻ\nMemora là trò chơi chơi đơn. Điểm bạn gửi có thể xuất hiện trên bảng xếp hạng công khai kèm tên hiển thị. Bạn có thể chia sẻ điểm qua sheet chia sẻ của hệ điều hành; chúng tôi không tải thêm nội dung chia sẻ đó lên máy chủ ngoài những gì hệ điều hành yêu cầu.\n\n8. Thay đổi\nChúng tôi có thể cập nhật điều khoản theo thời gian. Việc tiếp tục sử dụng trò chơi sau khi thay đổi đồng nghĩa với việc chấp nhận điều khoản mới.\n\n9. Liên hệ\nThắc mắc về điều khoản: support@vraxion.com",
+    "privacyContent": "Cập nhật lần cuối: Tháng 8/2026\n\nChính sách Quyền riêng tư này mô tả cách Memora (\"trò chơi\"), do Vraxion phát hành, xử lý thông tin.\n\n1. Thông tin chúng tôi thu thập\n• Hồ sơ khách: guest ID và token bảo mật gắn với lần cài đặt, cùng tên hiển thị tùy chọn.\n• Dữ liệu chơi trên máy chủ: điểm số và metadata liên quan (như thời lượng phiên và số lần ghép) gửi lên cho bảng xếp hạng.\n• Thiết bị & thông báo (khi bật): nền tảng (iOS/Android), ngôn ngữ/locale và token đẩy thông báo.\n• Chỉ trên thiết bị: xu, kho vật phẩm, nhiệm vụ, quà hàng ngày, bản lưu ván đang chơi, cài đặt (nhạc, hiệu ứng, ngôn ngữ) và điểm cao cục bộ.\n• Sự kiện phân tích (khi bật): phiên chơi và sự kiện như bắt đầu/kết thúc ván, mua hàng, thưởng quảng cáo, nhận quà ngày, hoàn thành nhiệm vụ. Phân tích có thể gắn với guest ID.\n• Quảng cáo & đồng ý (khi có quảng cáo): mã định danh quảng cáo và trạng thái đồng ý qua các nền tảng như Google AdMob, gồm ATT trên iOS và các lời nhắc đồng ý áp dụng.\n\nChúng tôi không yêu cầu email hay tài khoản mạng xã hội để chơi.\n\n2. Cách sử dụng thông tin\nDùng để vận hành trò chơi, duy trì phiên khách, hiển thị bảng xếp hạng, gửi thông báo đẩy hoặc nhắc cục bộ (ví dụ quà ngày hoặc cập nhật hạng), xử lý mua trong ứng dụng, hiển thị hoặc ẩn quảng cáo, cải thiện sản phẩm và hỗ trợ người chơi.\n\n3. Nơi lưu trữ dữ liệu\nXu, vật phẩm, nhiệm vụ, quà ngày, bản lưu ván đang chơi và hầu hết cài đặt nằm trên thiết bị. Thông tin guest, tên hiển thị, điểm số (kèm metadata chơi liên quan) và token đẩy có thể lưu trên máy chủ để bảng xếp hạng và thông báo hoạt động giữa các phiên. Xóa dữ liệu hoặc gỡ app có thể xóa dữ liệu cục bộ và liên kết guest trên thiết bị đó.\n\n4. Dịch vụ bên thứ ba\nTùy bản dựng và cấu hình, trò chơi có thể dùng:\n• Google AdMob (quảng cáo và công cụ đồng ý/riêng tư)\n• Firebase Analytics\n• Firebase Cloud Messaging (thông báo đẩy)\n• RevenueCat và thanh toán trong ứng dụng của Apple / Google\n• Chia sẻ và đánh giá trong ứng dụng do hệ điều hành cung cấp\n\nMỗi nhà cung cấp xử lý dữ liệu theo chính sách riêng của họ.\n\n5. Quyền riêng tư trẻ em\nTrò chơi không hướng tới trẻ em dưới 13 tuổi. Chúng tôi không cố ý thu thập thông tin cá nhân từ trẻ dưới 13 tuổi. Nếu bạn cho rằng trẻ đã cung cấp thông tin đó, hãy liên hệ để chúng tôi xử lý phù hợp.\n\n6. Quyền của bạn\nTùy khu vực, bạn có thể yêu cầu truy cập, chỉnh sửa hoặc xóa dữ liệu cá nhân gắn với hồ sơ khách bằng cách liên hệ support@vraxion.com. Mua hàng và hoàn tiền trên cửa hàng do Apple hoặc Google xử lý.\n\n7. Thay đổi\nChúng tôi có thể cập nhật chính sách này theo thời gian. Thay đổi quan trọng sẽ được thông báo qua ứng dụng hoặc website (ví dụ memora.vraxion.com).\n\n8. Liên hệ\nThắc mắc về quyền riêng tư: support@vraxion.com"
+  },
+  "ads": {
+    "rewardOffline": "Kết nối mạng để nhận thưởng",
+    "rewardUnavailable": "Phần thưởng không khả dụng",
+    "rewardNotConfigured": "Chưa cấu hình phần thưởng cho vị trí {{placement}}",
+    "rewardIncomplete": "Quảng cáo chưa hoàn thành",
+    "useRequestReward": "Dùng requestReward cho vị trí quảng cáo thưởng"
+  },
+  "rateApp": {
+    "title": "ĐÁNH GIÁ TRÒ CHƠI",
+    "message": "Hãy đánh giá để giúp chúng tôi cải thiện trò chơi tốt hơn nhé!",
+    "rateNow": "ĐÁNH GIÁ NGAY",
+    "later": "ĐỂ SAU",
+    "thanks": "Cảm ơn bạn đã đánh giá!"
+  },
+  "notifications": {
+    "dailyReward": {
+      "title": "Quà hàng ngày",
+      "body": "Quà hàng ngày đã sẵn sàng. Quay lại và nhận thưởng nhé!"
+    },
+    "top100Exited": {
+      "body": "Bạn đã rời Top 100. Hãy quay lại để cải thiện thứ hạng."
+    },
+    "rankPush": {
+      "body": "Hiện bạn đang đứng hạng #{{rank}}.",
+      "bodyFallback": "Xem thứ hạng leaderboard hiện tại của bạn."
+    }
+  }
+}

@@ -1,0 +1,16 @@
+export { i18n } from './i18n';
+export { shop } from './shop';
+export { campaign } from './campaign';
+export { adsModule } from './ads';
+export { saveService } from './save';
+export { settings } from './settings';
+export { bindIapController } from './iap';
+export { gameRunService } from './game-run';
+export { leaderboard } from './leaderboard';
+export { dailyRewards } from './daily-reward';
+export { deepLinkService } from './deep-link';
+export { gameSyncController } from './game-sync';
+export { guest, guestController } from './guest';
+export { missions, missionController } from './missions';
+export { syncGuestToStore, bindGuestStoreSync } from './guest';
+export { notificationService, notificationController } from './notifications';

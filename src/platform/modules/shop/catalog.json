@@ -1,0 +1,52 @@
+{
+  "items": [
+    {
+      "price": 500,
+      "type": "boost",
+      "currency": "coins",
+      "id": "boost_reveal",
+      "icon": "shop-item-1",
+      "name": "Reveal One",
+      "description": "Flip 3 cards this turn."
+    },
+    {
+      "price": 500,
+      "type": "boost",
+      "currency": "coins",
+      "id": "boost_extra_time",
+      "icon": "shop-item-2",
+      "name": "Extra Time",
+      "description": "Add 30 seconds to the timer!"
+    },
+    {
+      "price": 800,
+      "name": "Lucky Clover",
+      "type": "boost",
+      "id": "boost_lucky_clover",
+      "currency": "coins",
+      "icon": "shop-item-3",
+      "description": "Next correct match clears an extra pair."
+    },
+    {
+      "price": 3.99,
+      "currency": "iap",
+      "id": "remove_ads",
+      "name": "Remove Ads",
+      "icon": "no-ads-icon",
+      "type": "entitlement",
+      "productKey": "REMOVE_ADS",
+      "description": "Remove all ads permanently"
+    },
+    {
+      "price": 0.99,
+      "type": "coins",
+      "currency": "iap",
+      "coinAmount": 10000,
+      "id": "coins_10000",
+      "icon": "coin-icon",
+      "name": "10000 Coins",
+      "productKey": "COINS_10000",
+      "description": "Get 10000 coins"
+    }
+  ]
+}

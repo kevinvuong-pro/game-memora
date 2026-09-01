@@ -1,0 +1,28 @@
+{
+  "applinks": {
+    "apps": [],
+    "details": [
+      {
+        "appIDs": [
+          "TEAM_ID.com.vraxion.memora"
+        ],
+        "paths": [
+          "/",
+          "/home",
+          "/leaderboard",
+          "/shop",
+          "/settings",
+          "/missions",
+          "/daily-reward",
+          "/how-to-play",
+          "/play",
+          "/map",
+          "/gameplay",
+          "/infinity",
+          "/legal",
+          "NOT /api/*"
+        ]
+      }
+    ]
+  }
+}

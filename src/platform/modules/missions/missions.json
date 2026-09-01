@@ -1,0 +1,60 @@
+[
+  {
+    "target": 1,
+    "type": "EARN_STARS",
+    "goScene": "Map",
+    "resetPolicy": "daily",
+    "id": "get_3_stars",
+    "icon": "mission-item-1",
+    "titleKey": "missions.get3Stars",
+    "reward": { "type": "coins", "amount": 1000 }
+  },
+  {
+    "target": 15,
+    "type": "MERGE",
+    "goScene": "Map",
+    "resetPolicy": "daily",
+    "id": "match_pairs_15",
+    "icon": "mission-item-2",
+    "titleKey": "missions.matchPairs15",
+    "reward": { "type": "coins", "amount": 300 }
+  },
+  {
+    "target": 1,
+    "id": "watch_ad",
+    "type": "WATCH_AD",
+    "icon": "mission-item-3",
+    "resetPolicy": "onClaim",
+    "titleKey": "missions.watchAd",
+    "reward": { "type": "coins", "amount": 1000 }
+  },
+  {
+    "target": 3,
+    "type": "PLAY_GAME",
+    "id": "play_games_3",
+    "goScene": "Map",
+    "resetPolicy": "daily",
+    "icon": "mission-item-4",
+    "titleKey": "missions.playGames3",
+    "reward": { "type": "coins", "amount": 1500 }
+  },
+  {
+    "target": 1,
+    "id": "daily_login",
+    "type": "DAILY_LOGIN",
+    "resetPolicy": "daily",
+    "icon": "mission-item-5",
+    "titleKey": "missions.dailyLogin",
+    "reward": { "type": "coins", "amount": 300 }
+  },
+  {
+    "target": 1,
+    "type": "UPDATE_NAME",
+    "goScene": "Settings",
+    "resetPolicy": "never",
+    "icon": "mission-item-6",
+    "id": "update_player_name",
+    "titleKey": "missions.updatePlayerName",
+    "reward": { "type": "coins", "amount": 500 }
+  }
+]

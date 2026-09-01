@@ -1,0 +1,34 @@
+{
+  "exclude": ["dist", "node_modules"],
+  "include": ["src", "vite.config.ts"],
+  "compilerOptions": {
+    "baseUrl": ".",
+    "noEmit": true,
+    "strict": true,
+    "module": "ESNext",
+    "target": "ES2022",
+    "skipLibCheck": true,
+    "noUnusedLocals": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "resolveJsonModule": true,
+    "noUnusedParameters": true,
+    "moduleResolution": "bundler",
+    "useDefineForClassFields": true,
+    "allowImportingTsExtensions": true,
+    "noFallthroughCasesInSwitch": true,
+    "forceConsistentCasingInFileNames": true,
+    "lib": ["DOM", "ES2022", "DOM.Iterable"],
+    "paths": {
+      "@game/*": ["src/game/*"],
+      "@platform/core": ["src/platform/core"],
+      "@platform/ui/*": ["src/platform/ui/*"],
+      "@platform/core/*": ["src/platform/core/*"],
+      "@platform/ui": ["src/platform/ui/index.ts"],
+      "@platform/bootstrap": ["src/platform/bootstrap"],
+      "@platform/modules/*": ["src/platform/modules/*"],
+      "@platform/bootstrap/*": ["src/platform/bootstrap/*"],
+      "@platform/modules": ["src/platform/modules/index.ts"]
+    }
+  }
+}

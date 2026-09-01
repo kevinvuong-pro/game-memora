@@ -1,0 +1,387 @@
+import {
+  MAX_BATCH_SIZE,
+  toClientResultId,
+  toResultMetadata,
+  toNonNegativeInt,
+  MAX_SYNC_ATTEMPTS,
+  type ResultSubmitData,
+  type PendingGameResult,
+  isTransientSyncErrorCode,
+} from './game-sync.model';
+import { ApiError } from '@platform/core/api';
+import { logger } from '@platform/core/error';
+import { eventBus } from '@platform/core/events';
+import { generateId } from '@platform/core/utils';
+import { getConfig } from '@platform/core/config';
+import { leaderboard } from '@platform/modules/leaderboard';
+import { guest, type GuestService } from '@platform/modules/guest';
+import { gameSyncRepository, type GameSyncRepository } from './game-sync.repository';
+
+const BASE_SYNC_BACKOFF_MS = 30_000;
+const MAX_SYNC_BACKOFF_MS = 30 * 60 * 1000;
+
+export interface RecordResultParams {
+  score: number;
+  playedAt?: string;
+  metadata?: Record<string, unknown>;
+}
+
+/**
+ * Offline-first match-result sync.
+ */
+export class GameSyncService {
+  private dirty = false;
+  /** Serializes load→mutate→save on the offline queue (avoids wipe races). */
+  private queueLock: Promise<void> = Promise.resolve();
+  /**
+   * In-flight `game:over` queue+flush. Assigned synchronously when a match ends so
+   * GameOver can await it before reading rank.
+   */
+  private latestResultSync: Promise<number | null> = Promise.resolve(null);
+  /** Last `data.rank` from a successful `/results` response (this process). */
+  private lastApiRank: number | null = null;
+  /** Bumped on guest auth recovery so in-flight flushes must not POST/apply under a new identity. */
+  private flushEpoch = 0;
+  /** Chains flush passes so a `dirty` set after a while-exit still drains. */
+  private flushChain: Promise<void> = Promise.resolve();
+
+  constructor(
+    private readonly repository: GameSyncRepository = gameSyncRepository,
+    private readonly guestService: GuestService = guest
+  ) {}
+
+  /** Clears stale rank before a new finished match is queued. */
+  clearLastApiRank(): void {
+    this.lastApiRank = null;
+  }
+
+  /**
+   * Queue a finished match and flush. Starts synchronously so callers that run
+   * right after `game:over` (e.g. GameOverScene) can await `flushAndGetRank`.
+   */
+  queueAndFlushResult(params: RecordResultParams): void {
+    this.latestResultSync = (async () => {
+      this.clearLastApiRank();
+      await this.recordResult(params);
+      try {
+        return await this.flush();
+      } catch {
+        return this.lastApiRank;
+      }
+    })();
+  }
+
+  /**
+   * Flush pending results and return `data.rank` from `/results` when online.
+   * Returns null when offline, guest not ready, or the API omits rank.
+   */
+  async flushAndGetRank(): Promise<number | null> {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      return null;
+    }
+
+    // Wait for the matching game:over pipeline (record → flush) when present.
+    await this.latestResultSync.catch(() => null);
+    await this.flush();
+    return this.lastApiRank;
+  }
+
+  /**
+   * Guest 401 recovery: drop the offline queue under the same lock as flush,
+   * and invalidate in-flight HTTP so old scores cannot attach to a new guest.
+   */
+  async abortAndClearForRecovery(): Promise<void> {
+    this.flushEpoch += 1;
+    this.dirty = false;
+    this.lastApiRank = null;
+    await this.withQueueLock(async () => {
+      await this.repository.clear();
+    });
+  }
+
+  async recordResult(params: RecordResultParams): Promise<void> {
+    await this.withQueueLock(async () => {
+      const { gameId } = getConfig();
+      // Empty guestId is an unsigned marker; flush() rebinds when guest becomes ready.
+      const guestId = this.guestService.getGuestId() ?? '';
+      const score = toNonNegativeInt(params.score);
+      const playedAt = params.playedAt ?? new Date().toISOString();
+      const clientResultId = toClientResultId(generateId('result'));
+
+      const result: PendingGameResult = {
+        localId: clientResultId,
+        clientResultId,
+        gameId,
+        guestId,
+        score,
+        playedAt,
+        metadata: params.metadata,
+        synced: false,
+        syncAttempts: 0,
+        createdAt: playedAt,
+      };
+
+      const queue = await this.repository.loadQueue();
+      queue.push(result);
+      await this.repository.saveQueue(queue);
+      logger.debug('[GameSync] Result queued', { clientResultId, score });
+    });
+  }
+
+  private withQueueLock<T>(op: () => Promise<T>): Promise<T> {
+    const run = this.queueLock.then(op, op);
+    this.queueLock = run.then(
+      () => undefined,
+      () => undefined
+    );
+    return run;
+  }
+
+  async flush(): Promise<number | null> {
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return null;
+
+    const gameId = getConfig().gameId;
+    const guestId = this.guestService.getGuestId();
+    if (!guestId || this.guestService.getStatus() !== 'ready') {
+      logger.debug('[GameSync] Flush skipped — guest not ready');
+      return null;
+    }
+
+    this.dirty = true;
+    const epoch = this.flushEpoch;
+    const run = this.flushChain.then(() => this.drainFlush(gameId, guestId, epoch));
+    this.flushChain = run.then(
+      () => undefined,
+      () => undefined
+    );
+    return run;
+  }
+
+  private async drainFlush(gameId: string, guestId: string, epoch: number): Promise<number | null> {
+    while (this.dirty) {
+      if (epoch !== this.flushEpoch) {
+        return this.lastApiRank;
+      }
+      this.dirty = false;
+      try {
+        await this.flushForGuest(gameId, guestId, epoch);
+      } catch (error) {
+        this.dirty = true;
+        logger.error('[GameSync] Flush failed — will retry on next trigger', error);
+        throw error;
+      }
+    }
+    return this.lastApiRank;
+  }
+
+  private async flushForGuest(gameId: string, guestId: string, epoch: number): Promise<void> {
+    const prepared = await this.withQueueLock(async () => {
+      let queue = await this.repository.loadQueue();
+      let mutated = false;
+
+      // Drop orphans from a previous guest on this install (e.g. leftover after a failed recovery).
+      // Never rebind — that would attribute another identity's scores to the current guest.
+      const orphanCount = queue.filter(
+        (item) =>
+          !item.synced && item.gameId === gameId && !!item.guestId && item.guestId !== guestId
+      ).length;
+      if (orphanCount > 0) {
+        logger.warn('[GameSync] Dropping orphaned results from previous guest', {
+          count: orphanCount,
+        });
+        queue = queue.filter(
+          (item) =>
+            item.synced || item.gameId !== gameId || !item.guestId || item.guestId === guestId
+        );
+        mutated = true;
+      }
+
+      // Bind unsigned/local rows that never got a guestId to the current identity.
+      queue = queue.map((item) => {
+        if (!item.synced && item.gameId === gameId && !item.guestId) {
+          mutated = true;
+          return { ...item, guestId };
+        }
+        return item;
+      });
+
+      const now = Date.now();
+      const pending = queue.filter(
+        (r) =>
+          !r.synced &&
+          r.gameId === gameId &&
+          r.guestId === guestId &&
+          (r.syncAttempts < MAX_SYNC_ATTEMPTS || isTransientSyncErrorCode(r.lastErrorCode)) &&
+          (!r.nextAttemptAt || Date.parse(r.nextAttemptAt) <= now)
+      );
+
+      if (pending.length === 0) {
+        // Never rewrite an unchanged snapshot — a concurrent recordResult must not be wiped.
+        if (mutated) {
+          await this.repository.saveQueue(queue);
+        }
+        return null;
+      }
+
+      if (mutated) {
+        await this.repository.saveQueue(queue);
+      }
+
+      return pending;
+    });
+
+    if (!prepared) return;
+    if (epoch !== this.flushEpoch) return;
+
+    for (let i = 0; i < prepared.length; i += MAX_BATCH_SIZE) {
+      if (epoch !== this.flushEpoch) return;
+      const batch = prepared.slice(i, i + MAX_BATCH_SIZE);
+
+      try {
+        const response = await this.repository.sync(
+          gameId,
+          batch.map(({ clientResultId, score, playedAt, metadata }) => ({
+            clientResultId: toClientResultId(clientResultId),
+            score: toNonNegativeInt(score),
+            playedAt,
+            metadata: toResultMetadata(metadata),
+          }))
+        );
+
+        if (epoch !== this.flushEpoch) return;
+
+        await this.withQueueLock(async () => {
+          if (epoch !== this.flushEpoch) return;
+          let queue = await this.repository.loadQueue();
+          queue = this.applyBatchSyncResults(queue, batch, gameId, guestId);
+          this.applyRankFromApi(response);
+          queue = this.pruneQueue(queue);
+          await this.repository.saveQueue(queue);
+        });
+      } catch (error) {
+        this.logExpectedApiErrors(error);
+        if (epoch !== this.flushEpoch) return;
+        await this.withQueueLock(async () => {
+          if (epoch !== this.flushEpoch) return;
+          let queue = await this.repository.loadQueue();
+          queue = this.incrementAttempts(queue, batch, gameId, error);
+          queue = this.pruneQueue(queue);
+          await this.repository.saveQueue(queue);
+        });
+        logger.warn('[GameSync] Batch sync failed, will retry later', error);
+        throw error;
+      }
+    }
+  }
+
+  private logExpectedApiErrors(error: unknown): void {
+    if (error instanceof ApiError && error.status === 404) {
+      logger.error('[GameSync] Game not found on backend — check gameId config', error);
+    }
+    if (error instanceof ApiError && error.status === 401) {
+      logger.error('[GameSync] Guest auth failed — credentials may be invalid', error);
+    }
+  }
+
+  /** Prefer `data.rank` from `/results` — coerce number-like values from the wire. */
+  private applyRankFromApi(response: ResultSubmitData): void {
+    const rank = toOptionalFiniteNumber(response.rank);
+    if (rank === null) return;
+
+    this.lastApiRank = rank;
+
+    const bestScore = toOptionalFiniteNumber(response.bestScore);
+    if (bestScore !== null) {
+      leaderboard.updateSelfRank(rank, bestScore);
+      eventBus.emit('game:sync:completed', { rank, bestScore });
+    }
+  }
+
+  private applyBatchSyncResults(
+    queue: PendingGameResult[],
+    batch: PendingGameResult[],
+    gameId: string,
+    guestId: string
+  ): PendingGameResult[] {
+    const batchIds = new Set(batch.map((item) => item.localId));
+
+    return queue.map((item) => {
+      if (!batchIds.has(item.localId) || item.gameId !== gameId) {
+        return item;
+      }
+      return { ...item, synced: true, guestId };
+    });
+  }
+
+  private pruneQueue(queue: PendingGameResult[]): PendingGameResult[] {
+    const kept: PendingGameResult[] = [];
+
+    for (const item of queue) {
+      if (item.synced) {
+        continue;
+      }
+
+      // Never drop scores that failed due to transient network / server blips.
+      if (item.syncAttempts >= MAX_SYNC_ATTEMPTS && !isTransientSyncErrorCode(item.lastErrorCode)) {
+        continue;
+      }
+
+      kept.push(item);
+    }
+
+    return kept;
+  }
+
+  private incrementAttempts(
+    queue: PendingGameResult[],
+    batch: PendingGameResult[],
+    gameId: string,
+    error: unknown
+  ): PendingGameResult[] {
+    const ids = new Set(batch.map((r) => r.localId));
+    const errorCode = error instanceof ApiError ? String(error.status) : 'network';
+    return queue.map((item) =>
+      ids.has(item.localId) && item.gameId === gameId
+        ? this.markAttemptFailed(item, errorCode, {
+            countTowardDrop: !isTransientSyncErrorCode(errorCode),
+          })
+        : item
+    );
+  }
+
+  private markAttemptFailed(
+    item: PendingGameResult,
+    errorCode: string,
+    options: { countTowardDrop?: boolean } = {}
+  ): PendingGameResult {
+    const countTowardDrop = options.countTowardDrop ?? !isTransientSyncErrorCode(errorCode);
+    // Cap below MAX so transient failures stay eligible for flush forever.
+    const syncAttempts = countTowardDrop
+      ? item.syncAttempts + 1
+      : Math.min(item.syncAttempts + 1, MAX_SYNC_ATTEMPTS - 1);
+    const backoffMs = Math.min(
+      MAX_SYNC_BACKOFF_MS,
+      BASE_SYNC_BACKOFF_MS * 2 ** Math.max(0, syncAttempts - 1)
+    );
+    const now = Date.now();
+
+    return {
+      ...item,
+      syncAttempts,
+      lastErrorCode: errorCode,
+      lastAttemptAt: new Date(now).toISOString(),
+      nextAttemptAt: new Date(now + backoffMs).toISOString(),
+    };
+  }
+}
+
+function toOptionalFiniteNumber(value: unknown): number | null {
+  if (typeof value === 'number' && Number.isFinite(value)) return value;
+  if (typeof value === 'string' && value.trim() !== '') {
+    const parsed = Number(value);
+    if (Number.isFinite(parsed)) return parsed;
+  }
+  return null;
+}
+
+export const gameSync = new GameSyncService();

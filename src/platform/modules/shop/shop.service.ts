@@ -1,0 +1,164 @@
+import catalog from './catalog.json';
+import { logger } from '@platform/core/error';
+import { eventBus } from '@platform/core/events';
+import { saveService } from '@platform/modules/save';
+import { usePlatformStore } from '@platform/core/state';
+import type { ProductKey } from '@platform/modules/iap';
+import { iap, getProductByKey } from '@platform/modules/iap';
+
+type ShopItemType = 'coins' | 'boost' | 'entitlement';
+
+export interface ShopItem {
+  id: string;
+  name: string;
+  icon: string;
+  price: number;
+  type: ShopItemType;
+  /** Coins granted after a successful IAP coin-pack purchase. */
+  coinAmount?: number;
+  description: string;
+  productKey?: ProductKey;
+  currency: 'iap' | 'coins';
+}
+
+export interface ShopPurchaseResult {
+  error?: string;
+  success: boolean;
+  cancelled: boolean;
+}
+
+class ShopService {
+  private items: ShopItem[] = catalog.items as ShopItem[];
+  private purchaseInFlight = false;
+
+  getItems(type?: ShopItemType): ShopItem[] {
+    const items = type ? this.items.filter((item) => item.type === type) : this.items;
+    if (!iap.isEnabled()) {
+      return items.filter((item) => item.currency !== 'iap');
+    }
+    return items;
+  }
+
+  getItem(id: string): ShopItem | undefined {
+    return this.items.find((item) => item.id === id);
+  }
+
+  isOwned(id: string): boolean {
+    const item = this.getItem(id);
+    if (!item) return false;
+
+    if (item.type === 'entitlement' && item.productKey) {
+      const product = getProductByKey(item.productKey);
+      return iap.has(product.entitlement);
+    }
+
+    if (item.type === 'boost') {
+      return this.getQuantity(id) > 0;
+    }
+
+    return !!usePlatformStore.getState().inventory.items[id];
+  }
+
+  getQuantity(id: string): number {
+    return usePlatformStore.getState().inventory.items[id]?.quantity ?? 0;
+  }
+
+  isPurchaseInFlight(): boolean {
+    return this.purchaseInFlight;
+  }
+
+  /** Consume one use of a boost skill. Returns false if none left. */
+  consumeBoost(id: string): boolean {
+    if (this.getQuantity(id) <= 0) return false;
+    usePlatformStore.getState().removeItem(id, 1);
+    // Persist immediately so force-quit mid-match cannot restore spent boosts.
+    void saveService.saveLocal();
+    return true;
+  }
+
+  async purchase(itemId: string): Promise<ShopPurchaseResult> {
+    if (this.purchaseInFlight) {
+      logger.warn(`[Shop] Purchase already in flight: ${itemId}`);
+      return { success: false, cancelled: false, error: 'Purchase already in progress' };
+    }
+
+    const item = this.getItem(itemId);
+    if (!item) {
+      logger.warn(`[Shop] Item not found: ${itemId}`);
+      return { success: false, cancelled: false, error: 'Item not found' };
+    }
+
+    this.purchaseInFlight = true;
+    try {
+      if (item.currency === 'iap' && item.productKey) {
+        // Already owned — success without a second charge / failure toast.
+        if (item.type === 'entitlement' && this.isOwned(itemId)) {
+          return { success: true, cancelled: false };
+        }
+
+        const product = getProductByKey(item.productKey);
+        const result = await iap.purchase(product);
+
+        if (result.success) {
+          // Coin packs are fulfilled via iap:purchase:success (also covers timeout recovery).
+          eventBus.emit('shop:purchase', { itemId, price: item.price });
+          return { success: true, cancelled: false };
+        }
+
+        if (!result.cancelled) {
+          logger.error('[Shop] IAP purchase failed', result.error);
+        }
+        return {
+          success: false,
+          cancelled: result.cancelled,
+          error: result.error,
+        };
+      }
+
+      if (item.currency === 'coins') {
+        if (!usePlatformStore.getState().spendCoins(item.price)) {
+          return { success: false, cancelled: false, error: 'not_enough_coins' };
+        }
+      } else {
+        return { success: false, cancelled: false, error: 'Unsupported currency' };
+      }
+
+      this.grantItem(item);
+      eventBus.emit('shop:purchase', { itemId, price: item.price });
+      return { success: true, cancelled: false };
+    } finally {
+      this.purchaseInFlight = false;
+    }
+  }
+
+  /** Grant coin packs after a successful consumable IAP purchase. */
+  fulfillIapProduct(productId: string): void {
+    const item = this.items.find((entry) => {
+      if (entry.id === productId) return true;
+      if (!entry.productKey) return false;
+      return getProductByKey(entry.productKey).id === productId;
+    });
+    if (item?.type === 'coins') {
+      this.grantCoins(item);
+    }
+  }
+
+  private grantItem(item: ShopItem): void {
+    if (item.type === 'boost') {
+      usePlatformStore.getState().addItem(item.id, 1);
+    }
+  }
+
+  private grantCoins(item: ShopItem): void {
+    const amount = item.coinAmount ?? 0;
+    if (amount <= 0) {
+      logger.warn(`[Shop] Coin pack missing coinAmount: ${item.id}`);
+      return;
+    }
+    usePlatformStore.getState().addCoins(amount);
+    // Durable persist is awaited by IapService.completePurchase / pending replay.
+    void saveService.saveLocal();
+  }
+}
+
+export const shop = new ShopService();

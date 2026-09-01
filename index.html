@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#1a1a2e" />
+    <title>Memora</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        touch-action: none;
+        background: #1a1a2e;
+        -webkit-tap-highlight-color: transparent;
+      }
+      #game-container {
+        width: 100%;
+        height: 100%;
+        position: relative;
+      }
+      /* Stack: letterbox (0) < canvas (1) < Phaser DOM overlay (2).
+         Canvas needs a non-static position so z-index beats the absolute letterbox.
+         DOM overlay must sit above canvas or HTML inputs (display name) stay invisible — especially on WKWebView. */
+      #game-container > canvas {
+        z-index: 1;
+      }
+      #game-container.tablet-layout > canvas {
+        position: relative;
+        z-index: 1;
+      }
+      #game-container > div:not(#tablet-letterbox-bg) {
+        z-index: 2;
+      }
+      #tablet-letterbox-bg {
+        inset: 0;
+        z-index: 0;
+        overflow: hidden;
+        position: absolute;
+        pointer-events: none;
+        background: #1a1a2e;
+      }
+      #tablet-letterbox-bg::before {
+        content: '';
+        inset: -48px;
+        position: absolute;
+        transform: scale(1.08);
+        filter: blur(28px) brightness(0.72) saturate(1.15);
+        background: center / cover no-repeat url('/assets/images/general-background-image.webp');
+      }
+    </style>
+  </head>
+  <body>
+    <div id="game-container"></div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

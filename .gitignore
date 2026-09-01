@@ -1,0 +1,14 @@
+.env
+/ios
+dist/
+*.log
+.env.*
+.vite/
+*.local
+/android
+.DS_Store
+node_modules/
+!.env.example
+.derived-data/
+native/firebase/google-services.json
+native/firebase/GoogleService-Info.plist

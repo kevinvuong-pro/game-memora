@@ -1,0 +1,10 @@
+{
+  "development": {
+    "pushNotificationsEnabled": true,
+    "localNotificationsEnabled": true
+  },
+  "production": {
+    "pushNotificationsEnabled": true,
+    "localNotificationsEnabled": true
+  }
+}
