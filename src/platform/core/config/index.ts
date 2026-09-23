@@ -66,7 +66,7 @@ const ENV_CONFIGS: Record<Environment, Partial<RuntimeConfig>> = {
     iapEnabled: false,
     analyticsEnabled: true,
     ...notificationEnvConfigs.development,
-    apiUrl: 'https://game-api-s5kn.onrender.com/api',
+    apiUrl: 'https://game-api-agod.onrender.com/api',
   },
   production: {
     debug: false,
@@ -75,7 +75,7 @@ const ENV_CONFIGS: Record<Environment, Partial<RuntimeConfig>> = {
     iapEnabled: false,
     analyticsEnabled: true,
     ...notificationEnvConfigs.production,
-    apiUrl: 'https://game-api-s5kn.onrender.com/api',
+    apiUrl: 'https://game-api-agod.onrender.com/api',
   },
 };
 
