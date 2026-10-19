@@ -1,0 +1,19 @@
+{
+  "name": "Memora",
+  "short_name": "Memora",
+  "description": "Play Memora with your friends and family.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "theme_color": "#1a1a2e",
+  "background_color": "#1a1a2e",
+  "icons": [
+    {
+      "src": "/pwa-icon.png",
+      "sizes": "1032x1032",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
